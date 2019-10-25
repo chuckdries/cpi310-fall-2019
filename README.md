@@ -45,3 +45,9 @@ const greet = async email => {
 The function above will pause itself until namePromise resolves.
 
 > Continuing with our box metaphor, There is no way to simply "peek inside" the box. To access its contents, you must `await` the promise or use `.then` and a callback. You can safely do either even after a promise has already resolved, it will work just fine.
+
+### Middleware
+
+Middleware is an express-specific concept that lets us intercept and work with requests. We'll go over this on Tuesday
+
+### ESModules
