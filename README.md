@@ -1,8 +1,17 @@
 # Chuck's CPI310 lecture Fall 2019
 
-## Objective
-
 We're building a message board with users and authentication
+
+## Libraries
+
+Documentation for libraries we're using
+
+- [express](https://expressjs.com) - web framework
+- [Handlebars](https://handlebarsjs.com/) - templating system
+  - [express-handlebars](https://www.npmjs.com/package/express-handlebars) - hooks up handlebars to work with express
+- sqlite - two things share the same name
+  - a self contained database
+  - a [node package](https://www.npmjs.com/package/sqlite) for connecting to said database
 
 ## New concepts
 
