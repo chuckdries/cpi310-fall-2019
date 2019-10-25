@@ -1,5 +1,10 @@
 <h1>hello world</h1>
+<ul>
+  {{#each messages}}
+  <li>{{this.message}}</li>
+  {{/each}}
+</ul>
 <form action="message" method="POST">
-  <input type="text" name="message" id="message-input" placeholder="say something">
+  <input autofocus type="text" name="message" id="message-input" placeholder="say something">
   <button>send message</button>
 </form>
