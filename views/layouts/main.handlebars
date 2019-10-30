@@ -5,6 +5,11 @@
 </head>
 
 <body>
+  {{#if error}}
+  <div style="background-color:rgb(232, 122, 85)">
+    {{error}}
+  </div>
+  {{/if}}
   {{{body}}}
 </body>
 
