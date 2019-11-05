@@ -27,6 +27,10 @@ app.post("/message", async (req, res) => {
   res.redirect("/");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
 app.get("/register", (req, res) => {
   res.render("register");
 });

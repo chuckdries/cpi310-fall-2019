@@ -51,3 +51,13 @@ The function above will pause itself until namePromise resolves.
 Middleware is an express-specific concept that lets us intercept and work with requests. We'll go over this on Tuesday
 
 ### ESModules
+
+(TODO)
+
+## Authentication
+
+Three parts
+
+1. User accounts (register)
+2. Look up user by email and verify password (login)
+3. Keep track of who is logged in across requests (cookies & middleware)
