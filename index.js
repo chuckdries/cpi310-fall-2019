@@ -3,6 +3,8 @@ const express = require("express");
 const exphbs = require("express-handlebars");
 const sqlite = require("sqlite");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
+const uuidv4 = require("uuid/v4");
 
 const saltRounds = 10;
 const app = express();
@@ -12,11 +14,11 @@ const dbPromise = sqlite.open("./data.sqlite");
 app.engine("handlebars", exphbs());
 app.set("view engine", "handlebars");
 app.use(express.urlencoded());
+app.use(cookieParser());
 
 app.get("/", async (req, res) => {
   const db = await dbPromise;
-  const users = await db.all("SELECT * FROM users");
-  console.log(users);
+  console.log(req.cookies);
   const messages = await db.all("SELECT * FROM messages");
   res.render("index", { messages: messages });
 });
@@ -29,6 +31,29 @@ app.post("/message", async (req, res) => {
 
 app.get("/login", (req, res) => {
   res.render("login");
+});
+
+app.post("/login", async (req, res) => {
+  const db = await dbPromise;
+  const { email, password } = req.body;
+  // const email = req.body.email;
+  // const password = req.body.password;
+  const user = await db.get("SELECT * FROM users WHERE email=?", email);
+  if (!user) {
+    return res.render("login", { error: "user not found" });
+  }
+  const matches = await bcrypt.compare(password, user.password);
+  if (!matches) {
+    return res.render("login", { error: "password is incorrect" });
+  }
+  const token = uuidv4();
+  await db.run(
+    "INSERT INTO authTokens (token, userId) VALUES (?, ?)",
+    token,
+    user.id
+  );
+  res.cookie("authToken", token);
+  res.redirect("/");
 });
 
 app.get("/register", (req, res) => {

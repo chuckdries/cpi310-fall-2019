@@ -8,5 +8,10 @@
   <input autofocus type="text" name="message" id="message-input" placeholder="say something">
   <button>send message</button>
 </form>
+{{#if user}}
+<h2>
+  {{user.name}}
+</h2>
+{{/if}}
 <a href="register">register</a>
 <a href="login">login</a>
