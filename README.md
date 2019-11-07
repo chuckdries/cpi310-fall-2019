@@ -2,6 +2,14 @@
 
 We're building a message board with users and authentication
 
+## Contact
+
+cpdries@asu.edu
+
+## Office Hours
+
+TBD
+
 ## Libraries
 
 Documentation for libraries we're using
