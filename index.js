@@ -54,10 +54,10 @@ app.get("/", async (req, res) => {
 app.post("/message", async (req, res) => {
   const db = await dbPromise;
   if (!req.user) {
-    return res.render("/", { error: "not logged in" });
+    return res.render("index", { error: "not logged in" });
   }
   if (!req.body || !req.body.message) {
-    return res.render("/", { error: "message not provided" });
+    return res.render("index", { error: "message not provided" });
   }
   await db.run(
     "INSERT INTO messages (message, authorId) VALUES (?, ?)",
