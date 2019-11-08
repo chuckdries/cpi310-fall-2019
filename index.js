@@ -16,16 +16,54 @@ app.set("view engine", "handlebars");
 app.use(express.urlencoded());
 app.use(cookieParser());
 
+const authorize = async (req, res, next) => {
+  const db = await dbPromise;
+  const token = req.cookies.authToken;
+  console.log("token from authorize:", token);
+  if (!token) {
+    return next();
+  }
+
+  const authToken = await db.get(
+    "SELECT * FROM authTokens WHERE token=?",
+    token
+  );
+  console.log("authToken from authorize", authToken);
+  if (!authToken) {
+    return next();
+  }
+
+  const user = await db.get(
+    "SELECT name, id FROM users WHERE id=?",
+    authToken.userId
+  );
+  console.log("user from authorize", user);
+
+  req.user = user;
+  next();
+};
+
+app.use(authorize);
+
 app.get("/", async (req, res) => {
   const db = await dbPromise;
-  console.log(req.cookies);
   const messages = await db.all("SELECT * FROM messages");
-  res.render("index", { messages: messages });
+  res.render("index", { messages: messages, user: req.user });
 });
 
 app.post("/message", async (req, res) => {
   const db = await dbPromise;
-  await db.run("INSERT INTO messages (message) VALUES (?)", req.body.message);
+  if (!req.user) {
+    return res.render("/", { error: "not logged in" });
+  }
+  if (!req.body || !req.body.message) {
+    return res.render("/", { error: "message not provided" });
+  }
+  await db.run(
+    "INSERT INTO messages (message, authorId) VALUES (?, ?)",
+    req.body.message,
+    req.user.id
+  );
   res.redirect("/");
 });
 
@@ -90,6 +128,14 @@ app.post("/register", async (req, res) => {
     email,
     pwHash
   );
+  const user = await db.get("SELECT * FROM users WHERE email=?", email);
+  const token = uuidv4();
+  await db.run(
+    "INSERT INTO authTokens (token, userId) VALUES (?, ?)",
+    token,
+    user.id
+  );
+  res.cookie("authToken", token);
   res.redirect("/");
 });
 

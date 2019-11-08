@@ -9,7 +9,9 @@ CREATE TABLE users
 CREATE TABLE messages
 (
   id INTEGER PRIMARY KEY,
-  message STRING
+  authorId INTEGER,
+  message STRING,
+  FOREIGN KEY (authorId) REFERENCES users(id)
 );
 CREATE TABLE authTokens
 (

@@ -1,17 +1,15 @@
 <h1>hello world</h1>
 <ul>
   {{#each messages}}
-  <li>{{this.message}}</li>
+  <li>{{this.authorId}}: {{this.message}}</li>
   {{/each}}
 </ul>
+{{#if user}}
 <form action="message" method="POST">
   <input autofocus type="text" name="message" id="message-input" placeholder="say something">
   <button>send message</button>
 </form>
-{{#if user}}
-<h2>
-  {{user.name}}
-</h2>
-{{/if}}
+{{else}}
 <a href="register">register</a>
 <a href="login">login</a>
+{{/if}}
